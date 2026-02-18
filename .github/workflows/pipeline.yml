@@ -1,0 +1,19 @@
+name: primeiro workflow
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Primeiro commit
+        run: |
+          echo "Hello World....!"
+          echo "Data de commit $(date)"
