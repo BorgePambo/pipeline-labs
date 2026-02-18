@@ -1,16 +1,37 @@
-name: Exemplo github.event
+name: Demo Github Secrets
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  info:
+  demonstrar-secrets:
     runs-on: ubuntu-latest
-    steps:
-      - name: Mostrar evento
-        run: |
-          echo "Branch: ${{ github.event.ref }}"
-          echo "Commit: ${{ github.event.head_commit.id }}"
-          echo "Mensagem: ${{ github.event.head_commit.message }}"
 
+    steps:
+      - name: Fazer checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais da API
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+        run: |
+          echo "Configurando API da conexão externa..."
+          echo "URL da API: $API_URL"
+          echo "API está configurada: ${API_KEY:+SIM}"
+
+      - name: Conectar ao banco de dados (simulado)
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER_NAME: ${{ secrets.DB_USER_NAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+        run: |
+          echo "Simulando a conexão com banco de dados..."
+          echo "Host: $DB_HOST"
+          echo "Usuário: $DB_USER_NAME"
+          echo "Porta: $DB_PORT"
+          echo "Password: $DB_PASSWORD"
+          echo "Observe que a senha será mascarada no logs"
