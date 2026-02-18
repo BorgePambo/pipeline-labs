@@ -1,4 +1,4 @@
-name: primeiro workflow
+name: Teste Matrix
 
 on:
   push:
@@ -6,14 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  info:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: [3.10, 3.11]
 
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Primeiro commit
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Teste simples
         run: |
-          echo "Hello World....!"
-          echo "Data de commit $(date)"
+          python --version
+          echo "Rodando em ${{ matrix.os }} com Python ${{ matrix.python }}"
