@@ -1,24 +1,29 @@
-name: Workflow Paralelo
+name: Pipeline Sequencial
 
 on:
   push:
     branches: [main]
 
 jobs:
-  job1:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Job 1 rodando"
+      - name: Build
+        run: echo "Build executado"
 
-  job2:
+  test:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Job 2 rodando"
+      - name: Testes
+        run: echo "Testes executados"
 
-  job3:
+  deploy:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Job 3 rodando"
+      - name: Deploy
+        run: echo "Deploy executado"
