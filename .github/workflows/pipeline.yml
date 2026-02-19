@@ -5,25 +5,12 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build
-        run: echo "Build executado"
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - name: Testes
-        run: echo "Testes executados"
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Deploy
-        run: echo "Deploy executado"
+      - name: Mostrar variáveis do repositório
+        run: |
+          echo "App: ${{ vars.APP_NAME }}"
+          echo "Timeout padrão: ${{ vars.DEFAULT_TIMEOUT }}"
+          echo "Região padrão: ${{ vars.DEFUALT_REGION }}"
+          echo "Node version: ${{ vars.NODE }}"
