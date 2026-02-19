@@ -1,16 +1,29 @@
-name: Pipeline Sequencial
+name: Subdindo container
+
 
 on:
   push:
     branches: [main]
 
 jobs:
-  info:
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
-      - name: Mostrar variáveis do repositório
-        run: |
-          echo "App: ${{ vars.APP_NAME }}"
-          echo "Timeout padrão: ${{ vars.DEFAULT_TIMEOUT }}"
-          echo "Região padrão: ${{ vars.DEFUALT_REGION }}"
-          echo "Node version: ${{ vars.NODE }}"
+      - uses: actions/checkout@v4
+      - run: echo "Postgres rodando para testes"
